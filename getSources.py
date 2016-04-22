@@ -6,14 +6,19 @@ import re
 import pickle
 from pprint import pprint
 import json
+import eventlet
 
 def getPageText(url):
     user_agent = {'User-agent': 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.52 Safari/537.17'}
-    r=requests.get(url, headers = user_agent)
-    if r.status_code==200:
-        return r.text
-    else:
-        return ""
+    with eventlet.Timeout(300):
+        try:
+            r=requests.get(url, headers = user_agent)
+            if r.status_code==200:
+                return r.text
+            else:
+                return ""
+        except:
+            return ""
 
 def bs4PrettyPrint(soup):
    print (soup.prettify())
@@ -65,7 +70,7 @@ def main():
     dataLoc="data/contextStrings.json"
     dataWordSplitLoc="data/contextStringsWords.json"
 
-    for index,url in enumerate(urls):
+    for index,url in enumerate(urls[:1558]+urls[1600:]):
         contexts=getContext(url[0],url[1])  
         if contexts:
             for context in contexts:
