@@ -65,7 +65,7 @@ def main():
     dataLoc="data/contextStrings.json"
     dataWordSplitLoc="data/contextStringsWords.json"
 
-    for index,url in enumerate(urls[:10]):
+    for index,url in enumerate(urls):
         contexts=getContext(url[0],url[1])  
         if contexts:
             for context in contexts:
